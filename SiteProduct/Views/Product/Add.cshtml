@@ -7,10 +7,10 @@
 <h2>Додати продукт</h2>
 <i class="fa fa-plus"></i>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>AddProductViewModel</h4>
         <hr />
@@ -34,7 +34,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, 
+                   new { htmlAttributes = new { @class = "form-control", style="display: none" } })
+                <div id="textEdit" class="html-editor-autoinit">
+
+                </div>
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -51,6 +55,65 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+
+@section Styles {
+    <link href="~/Scripts/froala-editor/css/plugins/char_counter.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/code_view.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/colors.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/draggable.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/emoticons.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/image.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/image_manager.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/line_breaker.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/quick_insert.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/table.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/plugins/video.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/editor_custom.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/froala_editor.css" rel="stylesheet" />
+    <link href="~/Scripts/froala-editor/css/froala_style.css" rel="stylesheet" />
+}
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/froala-editor/js/ua.js"></script>
+    <script src="~/Scripts/froala-editor/js/froala_editor.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/align.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/char_counter.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/code_beautifier.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/code_view.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/colors.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/draggable.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/emoticons.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/entities.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/font_family.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/font_size.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/forms.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/image.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/image_manager.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/line_breaker.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/link.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/lists.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/paragraph_format.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/paragraph_style.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/quick_insert.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/quote.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/save.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/table.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/url.min.js"></script>
+    <script src="~/Scripts/froala-editor/js/plugins/video.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".html-editor-autoinit").froalaEditor({
+                imageUploadUrl: '/Produc/UploadImageDecription',
+                imageMaxSize: 2 * 1024 * 1024,
+                language: 'ua'
+            }).on('froalaEditor.image.error', function (e, ditor, error, response) {
+                if (error.code == 5) {
+                    alert("Розмір файлу не повинен бути більше 2 мб.");
+                }
+                return false;
+            });
+        });
+    </script>
 }

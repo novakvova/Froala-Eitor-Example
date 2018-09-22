@@ -17,5 +17,6 @@ namespace SiteProduct.DAL.Entities
         [StringLength(4000)]
         public string Description { get; set; }
         public decimal Price { get; set; }
+        public virtual ICollection<ProductDescriptionImage> ProductDescriptionImages { get; set; }
     }
 }

@@ -1,11 +1,14 @@
 ﻿
 using SiteProduct.Core;
+using SiteProduct.DAL.Entities;
+using SiteProduct.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,14 +16,40 @@ namespace SiteProduct.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public ProductController()
+        {
+            _context = new ApplicationDbContext();
+        }
         // GET: Product
         public ActionResult Index()
         {
             return View();
         }
+        [HttpGet]
         public ActionResult Add()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult Add(ProductAddViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    using (TransactionScope scope = new TransactionScope())
+                    {
+
+                        scope.Complete();
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            return View(model);
         }
         [HttpPost]
         public JsonResult UploadImageDecription(HttpPostedFileBase file)
@@ -39,6 +68,13 @@ namespace SiteProduct.Controllers
                         saveImage.Save(image, ImageFormat.Jpeg);
                         link = Url.Content(Constants.ProductDescriptionPath) + 
                             filename;
+                        var pdImage = new ProductDescriptionImage
+                        {
+                            Name = filename
+                        };
+                        _context.ProductDescriptionImages.Add(pdImage);
+                        _context.SaveChanges();
+
                     }
                 }
                 string path = Url.Content(Constants.ProductDescriptionPath);
@@ -50,7 +86,7 @@ namespace SiteProduct.Controllers
                     System.IO.File.Delete(image);
                 }
             }
-            return Json(new { link });
+            return Json(new { link, filename });
         }
 
         [HttpPost]
@@ -61,11 +97,32 @@ namespace SiteProduct.Controllers
             string image = Server.MapPath(Constants.ProductDescriptionPath) +
                 filename;
 
-            if (System.IO.File.Exists(image))
+            try
             {
-                System.IO.File.Delete(image);
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    var pdImage = _context
+                        .ProductDescriptionImages
+                        .SingleOrDefault(p => p.Name == filename);
+                    if(pdImage!=null)
+                    {
+                        _context.ProductDescriptionImages.Remove(pdImage);
+                        _context.SaveChanges();
+                    }
+                    //throw new Exception("Галяк");
+                    if (System.IO.File.Exists(image))
+                    {
+                        System.IO.File.Delete(image);
+                    }
+                    scope.Complete();
+                }
             }
-            return Json(new { link });
+            catch
+            {
+                filename = string.Empty;
+            }
+            
+            return Json(new { filename });
         }
         
     }

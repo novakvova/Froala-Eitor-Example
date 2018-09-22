@@ -22,7 +22,9 @@ namespace SiteProduct.Models
         [Required]
         [Range(0.10, 100000, ErrorMessage ="Діапазон ціни від 0.10 до 10000.00")]
         public decimal Price { get; set; }
+        [Required]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
+        public string[] DescriptionImages { get; set; }
     }
 }

@@ -17,5 +17,11 @@ namespace SiteProduct.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public JsonResult UploadImageDecription(HttpPostedFileBase file)
+        {
+
+            return Json(new { link = "/Images/Product/Description/default.jpg" });
+        }
     }
 }

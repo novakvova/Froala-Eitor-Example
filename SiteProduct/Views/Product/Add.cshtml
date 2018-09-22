@@ -74,7 +74,7 @@
 }
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
     <script src="~/Scripts/froala-editor/js/ua.js"></script>
     <script src="~/Scripts/froala-editor/js/froala_editor.min.js"></script>
     <script src="~/Scripts/froala-editor/js/plugins/align.min.js"></script>
@@ -105,8 +105,19 @@
     <script>
         $(function () {
             $(".html-editor-autoinit").froalaEditor({
-                imageUploadUrl: '/Produc/UploadImageDecription',
+                toolbarButtons: ['bold', 'italic', 'underline', 'paragraphFormat', '|',
+                    'color', 'emoticons', 'formatUL', 'formatOL', 'align', 'outdent', 'indent', '|',
+                    'quote', 'insertHR', 'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'undo', 'redo', 'clearFormatting', 'html'],
+                imageUploadURL: '/Product/UploadImageDecription',
                 imageMaxSize: 2 * 1024 * 1024,
+                paragraphFormat: {
+                    N: 'Звичайний',
+                    H2: 'H2',
+                    H3: 'H3',
+                    H4: 'H4',
+                    H5: 'H5',
+                    H6: 'H6'
+                },
                 language: 'ua'
             }).on('froalaEditor.image.error', function (e, ditor, error, response) {
                 if (error.code == 5) {

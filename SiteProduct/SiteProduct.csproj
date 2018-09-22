@@ -199,6 +199,8 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Core\Constants.cs" />
+    <Compile Include="Core\ImageWorker.cs" />
+    <Compile Include="DAL\Entities\Product.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -1,0 +1,15 @@
+﻿@model IEnumerable<SiteProduct.Models.ProductItemViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Add", null, new { @class = "btn btn-success" })
+</p>
+@if (Model != null)
+{
+    @Html.Partial("_ListProducts", Model)
+}

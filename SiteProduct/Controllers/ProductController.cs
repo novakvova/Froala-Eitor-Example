@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using SiteProduct.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,8 +22,10 @@ namespace SiteProduct.Controllers
         [HttpPost]
         public JsonResult UploadImageDecription(HttpPostedFileBase file)
         {
+            string link = string.Empty;
+            string path = Url.Content(Constants.ProductDescriptionPath);
 
-            return Json(new { link = "/Images/Product/Description/default.jpg" });
+            return Json(new { link = $"{path}default.jpg" });
         }
     }
 }

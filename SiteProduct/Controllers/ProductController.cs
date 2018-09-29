@@ -4,6 +4,7 @@ using SiteProduct.DAL.Entities;
 using SiteProduct.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -124,6 +125,9 @@ namespace SiteProduct.Controllers
             
             return Json(new { filename });
         }
-        
+        public static void ClearImages()
+        {
+            Debug.WriteLine("Work Hangfire");
+        }
     }
 }
